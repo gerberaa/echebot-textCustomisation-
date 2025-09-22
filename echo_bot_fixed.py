@@ -5,14 +5,14 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from config import BOT_TOKEN
 
-# Налаштування логування
+# Logging configuration
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-# Виправлені стилі шрифтів
+# Fixed font styles
 FONT_STYLES = {
     'bold': '𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗',
     'italic': '𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡𝑢𝑣𝑤𝑥𝑦𝑧0123456789',
@@ -46,11 +46,11 @@ FONT_STYLES = {
     'stroke': 'ȺB̸C̸D̸E̸F̸G̸H̸I̸J̸K̸L̸M̸N̸O̸P̸Q̸R̸S̸T̸U̸V̸W̸X̸Y̸Z̸Ⱥb̸c̸d̸e̸f̸g̸h̸i̸j̸k̸l̸m̸n̸o̸p̸q̸r̸s̸t̸u̸v̸w̸x̸y̸z̸0̸1̸2̸3̸4̸5̸6̸7̸8̸9̸',
 }
 
-# Звичайні символи для заміни
+# Normal characters for replacement
 NORMAL_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
 def style_text(text: str, style: str = None) -> str:
-    """Перетворює текст у вибраний стиль шрифту"""
+    """Converts text to the selected font style"""
     if style is None:
         style = random.choice(list(FONT_STYLES.keys()))
     
@@ -68,7 +68,7 @@ def style_text(text: str, style: str = None) -> str:
     return styled_text
 
 def get_fancy_response(text: str) -> str:
-    """Генерує красиву відповідь з різними стилями"""
+    """Generates a beautiful response with different styles"""
     responses = [
         f"✨ {style_text(text, 'bold')} ✨",
         f"🌟 {style_text(text, 'script')} 🌟",
@@ -105,8 +105,8 @@ def get_fancy_response(text: str) -> str:
     return random.choice(responses)
 
 def get_all_styles_response(text: str) -> str:
-    """Генерує відповідь з усіма стилями одразу"""
-    response = "🎨 ВСІ СТИЛІ ШРИФТІВ 🎨\n\n"
+    """Generates a response with all styles at once"""
+    response = "🎨 ALL FONT STYLES 🎨\n\n"
     
     styles_info = [
         ("𝐁𝐨𝐥𝐝", "bold", "✨"),
@@ -148,11 +148,11 @@ def get_all_styles_response(text: str) -> str:
         else:
             response += f"{emoji} {style_key}: {styled_text}\n"
     
-    response += "\n🔮 Кожен раз буде випадковий стиль! 🔮"
+    response += "\n🔮 Every time will be a random style! 🔮"
     return response
 
 def get_emoji_response(text: str) -> str:
-    """Генерує відповідь з емодзі та символами"""
+    """Generates a response with emoticons and symbols"""
     emojis = ["✨", "🌟", "💫", "⭐", "🔮", "💎", "🎭", "🎨", "🎪", "🎯", "🎲", "🎸", "🎺", "🎻", "🎼", "🎵", "🎶"]
     symbols = ["◈", "◉", "◎", "◊", "◌", "◍", "◎", "◐", "◑", "◒", "◓", "◔", "◕", "◖", "◗", "◘", "◙"]
     
@@ -173,59 +173,59 @@ def get_emoji_response(text: str) -> str:
     return random.choice(responses)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Обробник команди /start"""
+    """Command handler for /start"""
     user = update.effective_user
-    welcome_text = f'Привіт {user.first_name}! 👋\n\n'
-    welcome_text += '🎨 Я бот-ехо з красивими шрифтами! 🎨\n\n'
-    welcome_text += '✨ Надішли мені будь-яке повідомлення, і я повторю його у різних стилях:\n'
-    welcome_text += '• 𝐁𝐨𝐥𝐝 (жирний)\n'
-    welcome_text += '• 𝐴𝐵𝐶 (курсив)\n'
-    welcome_text += '• 𝓢𝓬𝓻𝓲𝓹𝓽 (рукописний)\n'
-    welcome_text += '• ⒸⒾⓇⒸⓁⒺⒹ (в кружечках)\n'
-    welcome_text += '• 𝔉𝔯𝔞𝔨𝔱𝔲𝔯 (готичний)\n'
-    welcome_text += '• 𝕄𝕠𝕟𝕠𝕤𝕡𝕒𝕔𝕖 (моноширинний)\n'
-    welcome_text += '• ᴀʙᴄ (малі капітали)\n'
-    welcome_text += '• ᵃᵇᶜ (крихітний)\n'
-    welcome_text += '• ɐqɔ (догори ногами)\n\n'
-    welcome_text += '🔮 Кожен раз буде новий стиль! 🔮'
+    welcome_text = f'Hello {user.first_name}! 👋\n\n'
+    welcome_text += '🎨 I am an echo bot with beautiful fonts! 🎨\n\n'
+    welcome_text += '✨ Send me any message and I will repeat it in different styles:\n'
+    welcome_text += '• 𝐁𝐨𝐥𝐝 (bold)\n'
+    welcome_text += '• 𝐴𝐵𝐶 (italic)\n'
+    welcome_text += '• 𝓢𝓬𝓻𝓲𝓹𝓽 (script)\n'
+    welcome_text += '• ⒸⒾⓇⒸⓁⒺⒹ (circled)\n'
+    welcome_text += '• 𝔉𝔯𝔞𝔨𝔱𝔲𝔯 (fraktur)\n'
+    welcome_text += '• 𝕄𝕠𝕟𝕠𝕤𝕡𝕒𝕔𝕖 (monospace)\n'
+    welcome_text += '• ᴀʙᴄ (small caps)\n'
+    welcome_text += '• ᵃᵇᶜ (tiny)\n'
+    welcome_text += '• ɐqɔ (upside down)\n\n'
+    welcome_text += '🔮 Every time will be a new style! 🔮'
     
     await update.message.reply_text(welcome_text)
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Обробник команди /help"""
-    help_text = '🎨 Бот-ехо з красивими шрифтами 🎨\n\n'
-    help_text += '📋 Доступні команди:\n'
-    help_text += '/start - Почати роботу з ботом\n'
-    help_text += '/help - Показати цю довідку\n\n'
-    help_text += '✨ Функції:\n'
-    help_text += '• Повторює тексти у 30+ різних стилях шрифтів\n'
-    help_text += '• Підтримує фото, документи, стікери, відео\n'
-    help_text += '• Кожен раз новий стиль відповіді\n'
-    help_text += '• Красиві емодзі та символи\n'
-    help_text += '• Спеціальні стилі: малі капітали, крихітний, догори ногами\n\n'
-    help_text += '🔮 Просто надішли мені повідомлення! 🔮'
+    """Command handler for /help"""
+    help_text = '🎨 Echo bot with beautiful fonts 🎨\n\n'
+    help_text += '📋 Available commands:\n'
+    help_text += '/start - Start working with the bot\n'
+    help_text += '/help - Show this help\n\n'
+    help_text += '✨ Features:\n'
+    help_text += '• Repeats texts in 30+ different font styles\n'
+    help_text += '• Supports photos, documents, stickers, videos\n'
+    help_text += '• New response style every time\n'
+    help_text += '• Beautiful emojis and symbols\n'
+    help_text += '• Special styles: small caps, tiny, upside down\n\n'
+    help_text += '🔮 Just send me a message! 🔮'
     
     await update.message.reply_text(help_text)
 
 async def echo_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Обробник всіх текстових повідомлень - повторює їх у стилізованому вигляді"""
+    """Handler for all text messages - repeats them in styled format"""
     user_message = update.message.text
     user = update.effective_user
     
-    # Логуємо повідомлення
-    logger.info(f"Користувач {user.first_name} ({user.id}) надіслав: {user_message}")
+    # Log the message
+    logger.info(f"User {user.first_name} ({user.id}) sent: {user_message}")
     
-    # Перевіряємо, чи це перше повідомлення користувача
+    # Check if this is the user's first message
     user_id = user.id
     if not hasattr(context, 'user_first_message'):
         context.user_first_message = set()
     
-    # Якщо це перше повідомлення користувача, показуємо всі стилі
+    # If this is the user's first message, show all styles
     if user_id not in context.user_first_message:
         context.user_first_message.add(user_id)
         styled_response = get_all_styles_response(user_message)
     else:
-        # Генеруємо стилізовану відповідь
+        # Generate styled response
         response_type = random.choice(['fancy', 'emoji', 'simple'])
         
         if response_type == 'fancy':
@@ -237,76 +237,76 @@ async def echo_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             styled_text = style_text(user_message, style)
             styled_response = f"✨ {styled_text} ✨"
     
-    # Відправляємо стилізовану відповідь
+    # Send styled response
     await update.message.reply_text(styled_response)
 
 async def echo_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Обробник фото - повторює фото з підписом"""
+    """Photo handler - repeats photo with caption"""
     user = update.effective_user
-    caption = update.message.caption or "Без підпису"
+    caption = update.message.caption or "No caption"
     
-    logger.info(f"Користувач {user.first_name} ({user.id}) надіслав фото з підписом: {caption}")
+    logger.info(f"User {user.first_name} ({user.id}) sent photo with caption: {caption}")
     
-    # Повторюємо фото
+    # Repeat photo
     await update.message.reply_photo(
         photo=update.message.photo[-1].file_id,
-        caption=f"🖼️ Ехо фото: {caption}"
+        caption=f"🖼️ Echo photo: {caption}"
     )
 
 async def echo_document(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Обробник документів - повторює документ"""
+    """Document handler - repeats document"""
     user = update.effective_user
     document = update.message.document
     
-    logger.info(f"Користувач {user.first_name} ({user.id}) надіслав документ: {document.file_name}")
+    logger.info(f"User {user.first_name} ({user.id}) sent document: {document.file_name}")
     
-    # Повторюємо документ
+    # Repeat document
     await update.message.reply_document(
         document=document.file_id,
-        caption=f"📄 Ехо документ: {document.file_name}"
+        caption=f"📄 Echo document: {document.file_name}"
     )
 
 async def echo_sticker(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Обробник стікерів - повторює стікер"""
+    """Sticker handler - repeats sticker"""
     user = update.effective_user
     
-    logger.info(f"Користувач {user.first_name} ({user.id}) надіслав стікер")
+    logger.info(f"User {user.first_name} ({user.id}) sent sticker")
     
-    # Повторюємо стікер
+    # Repeat sticker
     await update.message.reply_sticker(sticker=update.message.sticker.file_id)
 
 async def echo_voice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Обробник голосових повідомлень - повторює їх"""
+    """Voice message handler - repeats them"""
     user = update.effective_user
     
-    logger.info(f"Користувач {user.first_name} ({user.id}) надіслав голосове повідомлення")
+    logger.info(f"User {user.first_name} ({user.id}) sent voice message")
     
-    # Повторюємо голосове повідомлення
+    # Repeat voice message
     await update.message.reply_voice(voice=update.message.voice.file_id)
 
 async def echo_video(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Обробник відео - повторює відео"""
+    """Video handler - repeats video"""
     user = update.effective_user
-    caption = update.message.caption or "Без підпису"
+    caption = update.message.caption or "No caption"
     
-    logger.info(f"Користувач {user.first_name} ({user.id}) надіслав відео з підписом: {caption}")
+    logger.info(f"User {user.first_name} ({user.id}) sent video with caption: {caption}")
     
-    # Повторюємо відео
+    # Repeat video
     await update.message.reply_video(
         video=update.message.video.file_id,
-        caption=f"🎥 Ехо відео: {caption}"
+        caption=f"🎥 Echo video: {caption}"
     )
 
 def main() -> None:
-    """Основна функція для запуску бота"""
-    # Створюємо додаток
+    """Main function to start the bot"""
+    # Create application
     application = Application.builder().token(BOT_TOKEN).build()
     
-    # Додаємо обробники команд
+    # Add command handlers
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     
-    # Додаємо обробники повідомлень
+    # Add message handlers
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo_message))
     application.add_handler(MessageHandler(filters.PHOTO, echo_photo))
     application.add_handler(MessageHandler(filters.Document.ALL, echo_document))
@@ -314,9 +314,9 @@ def main() -> None:
     application.add_handler(MessageHandler(filters.VOICE, echo_voice))
     application.add_handler(MessageHandler(filters.VIDEO, echo_video))
     
-    # Запускаємо бота
-    print("🤖 Бот запускається...")
-    print("Натисніть Ctrl+C для зупинки")
+    # Start the bot
+    print("🤖 Bot is starting...")
+    print("Press Ctrl+C to stop")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
